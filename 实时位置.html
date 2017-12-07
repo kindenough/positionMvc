@@ -1,0 +1,107 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/misc/PathSimplifier/examples/simple-demo.html -->
+    <base href="//webapi.amap.com/ui/1.0/ui/misc/PathSimplifier/examples/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>简单路径</title>   
+        
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.2&key=6ad1e3e826b87e8197c2ddf652686616&plugin=AMap.Geocoder"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <style>
+    html,
+    body,
+    #container {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+    }
+    </style>
+    <style>
+        .amap-logo, .amap-copyright {
+            display: none!important;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position:absolute;right:10px;top:10px;z-index:99999;">
+        <button onclick="zoom()">车辆位置</button>
+    </div>
+    <div id="container"></div>
+    <!-- UI组件库 1.0 -->
+    <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    <script type="text/javascript">
+        var lnglatXY = null; //已知点坐标
+        var lasttime = null;
+        var marker = null;
+        $(function () {
+            showCar();
+            setInterval(function () {
+                showCar();
+            }, 3 * 1000); //指定1秒刷新一次
+
+            setTimeout(function () {
+                zoom();
+            },2000);
+        });
+
+        //创建地图
+        var map = new AMap.Map('container', {
+            zoom: 4
+        });
+
+        function zoom() {
+            map.setFitView();
+        }
+
+        function showCar() {
+            $.ajax({
+                type: 'POST',
+                //url: "http://localhost:29256/Position/postLastPosition",
+                url: "http://www.maomx.cn/Position/postLastPosition",
+                dataType: 'json',
+                data: JSON.stringify({ "starttime": "", "endtime": "" }),
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    if (data != "") {
+                        var lst = data.split(',');
+                        var ac = lst[3];
+                        if (lasttime == lst[2]) {
+                            marker.setLabel({ content: lasttime + "<br>离线 精度:" + ac });
+                            return;
+                        }
+
+                        lasttime = lst[2];                        
+
+                        map.clearMap();
+                        lnglatXY = [lst[0], lst[1]];
+                        marker = new AMap.Marker({
+                            map: map,
+                            //position: [lst[0], lst[1]],
+                            position: lnglatXY,
+                            icon: "http://webapi.amap.com/images/car.png",
+                            offset: new AMap.Pixel(-26, -13),
+                            autoRotation: true,
+                            label: {
+                                offset: new AMap.Pixel(-26, -40),//修改label相对于maker的位置
+                                content: lasttime + "<br>在线 精度:" + ac
+                            }
+                        });
+                        //regeocoder();
+                    }
+                },
+                error: function (XMLHttpRequest,textStatus,errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
