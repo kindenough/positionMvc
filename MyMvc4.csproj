@@ -126,13 +126,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
+    <Compile Include="Controllers\Position2Controller.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Db\Mssql.cs" />
+    <Compile Include="Db\Mssql2.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CRecvFile.cs" />
     <Compile Include="Models\Pos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -193,8 +197,10 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="gohome.html" />
     <Content Include="Images\car.png" />
-    <Content Include="car.html" />
+    <Content Include="passenger.html" />
+    <Content Include="test.html" />
     <Content Include="实时位置.html" />
     <Content Include="说明FTP.html" />
     <Content Include="路线规划.html" />

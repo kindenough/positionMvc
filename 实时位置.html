@@ -6,7 +6,7 @@
     <base href="//webapi.amap.com/ui/1.0/ui/misc/PathSimplifier/examples/" />
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>简单路径</title>   
+    <title>车辆位置</title>   
         
     <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.2&key=6ad1e3e826b87e8197c2ddf652686616&plugin=AMap.Geocoder"></script>
     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
@@ -32,6 +32,7 @@
 <body>
     <div style="position:absolute;right:10px;top:10px;z-index:99999;">
         <button onclick="zoom()">车辆位置</button>
+        <div id="divTxt"></div>
     </div>
     <div id="container"></div>
     <!-- UI组件库 1.0 -->
@@ -44,7 +45,7 @@
             showCar();
             setInterval(function () {
                 showCar();
-            }, 3 * 1000); //指定1秒刷新一次
+            }, 20 * 1000); //指定1秒刷新一次
 
             setTimeout(function () {
                 zoom();
@@ -72,8 +73,9 @@
                     if (data != "") {
                         var lst = data.split(',');
                         var ac = lst[3];
+                        var cont = "时间:" +lasttime + "<br>速度:" + lst[5] * 3.6 + "千米/时<br>精度:" + ac;
                         if (lasttime == lst[2]) {
-                            marker.setLabel({ content: lasttime + "<br>离线 精度:" + ac });
+                            marker.setLabel({ content: cont });
                             return;
                         }
 
@@ -89,10 +91,12 @@
                             offset: new AMap.Pixel(-26, -13),
                             autoRotation: true,
                             label: {
-                                offset: new AMap.Pixel(-26, -40),//修改label相对于maker的位置
-                                content: lasttime + "<br>在线 精度:" + ac
+                                offset: new AMap.Pixel(-26, -50),//修改label相对于maker的位置
+                                content: cont
                             }
                         });
+                        zoom();
+                        //var div1 = document.getElementById('divTxt').innerHTML = cont;
                         //regeocoder();
                     }
                 },

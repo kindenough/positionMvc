@@ -13,23 +13,25 @@ namespace MyMvc4.Controllers
     public class PositionController : ApiController
     {
         // GET api/position
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            Mssql ms = new Mssql();
+            return ms.getLastPosition("867822027117158");
+            //return new string[] { "value1", "value2" };
         }
 
         // GET api/position/5
         public string Get(int id)
         {
-            //Mssql ms = new Mssql();
-            //return ms.connSql(new Pos()).ToString();
-            return id.ToString();
+            Mssql ms = new Mssql();
+            string ret = ms.getLastPosition(id);
+            return ret;
         }
 
         // POST api/position
         public string Post([FromBody]string value)
         {
-            return value;
+            return "value:"+value;
         }
 
         [HttpPost]
@@ -40,17 +42,17 @@ namespace MyMvc4.Controllers
         }
 
         [HttpPost]
-        public string postLastPosition(DateTimeStartEnd se)
+        public string PostLastPosition(Pos p)
         {
             Mssql ms = new Mssql();
-            return ms.getLastPosition();
+            return ms.getLastPosition("867822027117158");
         }
 
         [HttpPost]
         public string PostPosition(Pos p)
         {
             Mssql ms = new Mssql();
-            return ms.connSql(p).ToString();
+            return ms.sqlInsert(p).ToString();
         }
 
         // PUT api/position/5

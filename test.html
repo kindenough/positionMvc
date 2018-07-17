@@ -75,23 +75,24 @@
 
         function showCar() {
             $.ajax({
-                type: 'POST',
-                //url: "http://localhost:29256/Position/postLastPosition",
-                url: "http://www.maomx.cn/Position/postLastPosition",
+                type: 'GET',
+                url: "http://localhost:29256/Position/get/0",
+                //url: "http://www.maomx.cn/Position/get/0",
                 dataType: 'json',
                 data: JSON.stringify({ "starttime": "", "endtime": "" }),
                 contentType: 'application/json;charset=utf-8',
                 success: function (data) {
                     if (data != "") {
-                        var lst = data.split(',');
-                        if (lasttime == lst[2]) {
-                            marker.setLabel({ content: lasttime + "离线" });
-                            return;
-                        }
+                        alert(data);
+                        ////var lst = data.split(',');
+                        ////if (lasttime == lst[2]) {
+                        ////    marker.setLabel({ content: lasttime + "离线" });
+                        ////    return;
+                        ////}
 
-                        lasttime = lst[2];
-                        lnglatXY = [lst[0], lst[1]];
-                        marker.setPosition(lnglatXY);
+                        ////lasttime = lst[2];
+                        ////lnglatXY = [lst[0], lst[1]];
+                        ////marker.setPosition(lnglatXY);
                         //regeocoder();
                     }
                 },

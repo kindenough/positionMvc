@@ -14,8 +14,10 @@ namespace MyMvc4.Models
         public string y { get; set; }
         public string speed { get; set; }
         public string time {get;set;}
-        public string accuracy{ get; set; }
+        public string accuracy { get; set; }
         public string deviceid { get; set; }
+        public string angle { get; set; }
+        public string teamid { get; set; }
     }
 
     public class DateTimeStartEnd

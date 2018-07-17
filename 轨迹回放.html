@@ -38,6 +38,7 @@
     <script type="text/javascript">
         document.getElementById("dt1").value = getNowFormatDate(10);
         document.getElementById("dt2").value = getNowFormatDate(0);
+        var g_navg1 = null;
         //创建地图
         var map = new AMap.Map('container', {
             zoom: 4
@@ -104,7 +105,7 @@
                 //    fillStyle: null
                 //}
             });
-
+            g_navg1 = navg1;
             navg1.start();
             
         });
@@ -353,6 +354,11 @@
                 success: function (data) {
                     //alert(data);
                     var pts = JSON.parse(data);
+                    if (g_navg1) {
+                       // g_navg1.destroy();
+                        g_navg1 = null;
+                        window.pathSimplifierIns.hide();
+                    }
                     pathMove(pts);
                 },
                 error: function (XMLHttpRequest,textStatus,errorThrown) {

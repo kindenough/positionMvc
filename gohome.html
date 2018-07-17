@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>可拖拽的路线规划</title>
+    <title>顺风车路线地图</title>
     <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
     <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.1&key=6ad1e3e826b87e8197c2ddf652686616"></script>
     <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
@@ -18,7 +18,7 @@
 </head>
 <body>
 <div id="container"></div>
-<div id="tip" style="left:80px;width:500px"><h3>顺风车路线</h3>起点:软件园东二门天桥下<br />终点:岩溪三十米大街<br />途经点:何厝顶何公交站、何厝边防派出所公交站、集美嘉庚体育馆、欧山(陈巷路口)<br />QQ：530861323<br />手机/微信：18359251360<br /><button id="btn" onclick="car()">动画</button></div>
+<div id="tip"><div id="idMsg">顺风车路线(2018-1-12周五18:00)<br />起点:软件园东二门天桥下;终点:岩溪三十米大街;途经点:何厝顶何公交站、何厝边防派出所公交站、集美嘉庚体育馆、欧山(陈巷路口)<br />QQ：530861323;手机/微信：18359251360</div><button onclick="setVisible()">隐藏/显示</button><br /><button id="btn" onclick="car()">动画</button></div>
 <script type="text/javascript">
     var pathSimplifierIns = null;
     var map, route, marker;
@@ -143,6 +143,16 @@
 
     }
 
+    var isShow = true;
+    function setVisible() {
+        if (isShow) {
+            isShow = false;
+            document.getElementById("idMsg").style.display = "none";
+        } else {
+            isShow = true;
+            document.getElementById("idMsg").style.display = "";
+        }
+    }
 </script>
 </body>
 </html>
