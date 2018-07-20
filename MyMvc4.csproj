@@ -198,7 +198,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="gohome.html" />
-    <Content Include="H5.html" />
+    <Content Include="Images\marker_red.png" />
+    <Content Include="YK.html" />
     <Content Include="Images\car.png" />
     <Content Include="My97DatePicker\calendar.js" />
     <Content Include="My97DatePicker\lang\en.js" />
