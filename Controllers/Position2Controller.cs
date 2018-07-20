@@ -26,6 +26,7 @@ namespace MyMvc4.Controllers
         [HttpPost]
         public string PostPosition(Pos p)
         {
+            //p.speed = transSpeedUnit(p.speed);
             return Mssql2.sqlInsert(p).ToString();
         }
 
@@ -42,6 +43,16 @@ namespace MyMvc4.Controllers
         // DELETE api/positionm/5
         public void Delete(int id)
         {
+        }
+
+        public string transSpeedUnit(string speed)
+        {
+            double d = Double.Parse(speed);
+            if (d>0)
+            {
+                d = d * 3600.0 / 1000.0;
+            }
+            return d.ToString();
         }
     }
 }

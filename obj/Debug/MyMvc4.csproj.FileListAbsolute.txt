@@ -48,3 +48,4 @@ D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\zh-Hans\System.Web.WebPages.Deploym
 D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
 D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\obj\Debug\MyMvc4.dll
 D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\obj\Debug\MyMvc4.pdb
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\obj\Debug\MyMvc4.csprojResolveAssemblyReference.cache

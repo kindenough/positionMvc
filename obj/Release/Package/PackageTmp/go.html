@@ -1,0 +1,242 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>实时位置&路线</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.1&key=6ad1e3e826b87e8197c2ddf652686616"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        /*高德地图去掉logo*/
+        .amap-logo, .amap-copyright {
+            display: none!important;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+    <div id="tip" style="left:80px;width:500px">
+        <button onclick="show()">收起/打开</button>
+        <div id="detail" hidden="hidden"><h3>顺风车路线</h3>起点:软件园西门<br />终点:岩溪三十米<br />途经点:软件园南门/吕岭路/环岛路/T4候机楼站(公交站)/集美嘉庚体育馆/长泰欧山(陈巷路口)<br />QQ：530861323<br />手机/微信：18359251360<br /><button id="btn" onclick="car()">动画</button></div>
+        <button onclick="ShowCar()">查看车辆位置</button>
+        <button onclick="showRoute()">查看计划路线</button>
+        <button onclick="reload()">刷新</button>
+        <br />
+        <span id="carinfo"></span>
+        <br />
+        <span id="demo"></span>
+    </div>
+
+    <script>
+    var x = document.getElementById("demo");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            alert("浏览器不支持地理定位。");
+        }
+    }
+    function showPosition(position) {
+        var lat = position.coords.latitude; //纬度 
+        var lag = position.coords.longitude; //经度 
+        alert('纬度:' + lat + ',经度:' + lag);
+    }
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("定位失败,用户拒绝请求地理定位");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("定位失败,位置信息是不可用");
+                break;
+            case error.TIMEOUT:
+                alert("定位失败,请求获取用户位置超时");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("定位失败,定位系统失效");
+                break;
+        }
+    }
+    getLocation();
+    </script>
+
+<script type="text/javascript">
+    function reload() {
+        location.reload();
+    }
+    var pathSimplifierIns = null;
+    var map, route, marker;
+    //基本地图加载
+    map = new AMap.Map("container", {
+        resizeEnable: true
+    });
+
+    var marker = new AMap.Marker({
+        icon: "Images/car.png",
+        position: [118.177399, 24.488704],
+        //position: [118.18913815, 24.47940064],
+        //angle: 116.5
+    });
+    map.add([marker]);
+    
+    //实时刷新时间单位为毫秒
+    setInterval('refreshQuery()',3000); 
+    /* 刷新查询 */
+    function refreshQuery() {
+        $.get("http://wncg.kingtopinfo.com/mymvc4/position/get/1", function (res) {
+            var arr = JSON.parse(res);
+            var obj = arr[0];
+            var speed = parseFloat(obj.speed).toFixed(1);
+            var status = speed > 30 ? "正常行驶" :(speed>10?"行驶缓慢":(speed==0?"静止":"前方拥堵"));
+            marker.setPosition([obj.x, obj.y]);
+            marker.setAngle(parseFloat(obj.angle));
+            marker.setLabel({
+                offset: new AMap.Pixel(-20, 50),//修改label相对于maker的位置
+                content: "蓝色**022"
+            });
+            document.getElementById('carinfo').innerHTML = "时间:" + obj.time;
+        })
+    }
+
+    //绘制初始路径
+    var pts = [];
+    var path = [];
+    //path.push([118.187488, 24.482162]);
+    //path.push([118.188611, 24.485118]);
+    //path.push([118.197221, 24.482628]);
+    path.push([118.177399, 24.488704]);
+    path.push([118.180339, 24.482067]);
+    path.push([118.194826, 24.477827]);
+    path.push([117.792954, 24.638756]);
+    path.push([117.772639, 24.744107]);
+    map.plugin("AMap.DragRoute", function () {
+        route = new AMap.DragRoute(map, path, AMap.DrivingPolicy.LEAST_TIME); //构造拖拽导航类
+
+        AMap.event.addListener(route, "complete", driving_routeCallBack); //返回导航查询结果
+
+        function driving_routeCallBack() {
+            var routePts = route.getRoute();
+            //alert(JSON.stringify(pts));
+            pts = [];
+            for(var i=0;i<routePts.length;i++)
+            {
+                var pt =[]
+                pt.push(routePts[i].lng);
+                pt.push(routePts[i].lat);
+                pts.push(pt);
+            }
+            //route.destroy();
+            pathSimplifierIns ? pathSimplifierIns.hide() : null;
+            pathSimplifierIns = null;
+        }
+
+
+    });
+
+    //显示/隐藏面板
+    function show() {
+        var b = document.getElementById("detail").hidden ? false : true;
+        document.getElementById("detail").hidden = b;
+    }
+    //显示路线
+    function showRoute(){
+        route.search(); //查询导航路径并开启拖拽导航
+    }
+    function ShowCar() {
+        // 设置缩放级别和中心点
+        map.setZoomAndCenter(14, marker.getPosition());
+        getLocation();
+    }
+
+    function car() {
+        if (pathSimplifierIns==null) {
+            pathMove(pts);
+            document.getElementById("btn").innerHTML = "关闭";
+        } else {
+            pathSimplifierIns.isHidden()?
+                pathSimplifierIns.show():
+                pathSimplifierIns.hide();
+        }
+        pathSimplifierIns.isHidden() ? document.getElementById("btn").innerHTML = "动画" : document.getElementById("btn").innerHTML = "关闭";
+        
+    }
+    function pathMove(pts) {
+        AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function (PathSimplifier, $) {
+
+            if (!PathSimplifier.supportCanvas) {
+                alert('当前环境不支持 Canvas！');
+                return;
+            }
+
+             pathSimplifierIns = new PathSimplifier({
+                zIndex: 1000000,
+                //autoSetFitView:false,
+                map: map, //所属的地图实例
+
+                getPath: function (pathData, pathIndex) {
+
+                    return pathData.path;
+                },
+                getHoverTitle: function (pathData, pathIndex, pointIndex) {
+
+                    if (pointIndex >= 0) {
+                        //point 
+                        return pathData.name + '，点：' + pointIndex + '/' + pathData.path.length;
+                    }
+
+                    return pathData.name + '，点数量' + pathData.path.length;
+                },
+                renderOptions: {
+
+                renderAllPointsIfNumberBelow: 100, //绘制路线节点，如不需要可设置为-1//轨迹线的样式
+                    pathLineStyle: {
+                strokeStyle: 'green',
+                lineWidth: 6,
+                dirArrowStyle: true
+            }
+                }
+            });
+
+            window.pathSimplifierIns = pathSimplifierIns;
+
+            //设置数据
+            pathSimplifierIns.setData([{
+                name: '路线0',
+                path: pts
+            }]);
+
+            function onload() {
+                pathSimplifierIns.renderLater();
+            }
+
+            function onerror(e) {
+                alert('图片加载失败！');
+            }
+
+            //对第一条线路（即索引 0）创建一个巡航器
+            var navg1 = pathSimplifierIns.createPathNavigator(0, {
+                loop: true, //循环播放
+                speed: 5000, //巡航速度，单位千米/小时
+                pathNavigatorStyle: {
+                    width: 16,
+                    height: 32,
+                    content: PathSimplifier.Render.Canvas.getImageContent('http://webapi.amap.com/ui/1.0/ui/misc/PathSimplifier/examples/imgs/car.png', onload, onerror),
+                    strokeStyle: null,
+                    fillStyle: null
+                }
+            });
+
+            navg1.start();
+
+        });
+
+    }
+
+</script>
+</body>
+</html>

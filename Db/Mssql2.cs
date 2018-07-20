@@ -10,7 +10,7 @@ namespace MyMvc4.Db
 {
     public class Mssql2
     {
-        static string constr = "server=bds25678386.my3w.com;database=bds25678386_db;uid=bds25678386;pwd=huangshixing";
+        static string constr = "server=localhost;database=tempdb;uid=sa;pwd=1a!23456";
         static SqlConnection con = new SqlConnection(constr);
         public static bool sqlInsert(Pos p)
         {

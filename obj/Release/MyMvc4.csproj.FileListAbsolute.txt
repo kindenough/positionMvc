@@ -39,3 +39,13 @@ D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\zh-Hans\System.Web.WebPages.Razor.r
 D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\obj\Release\MyMvc4.csprojResolveAssemblyReference.cache
 D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\obj\Release\MyMvc4.dll
 D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\obj\Release\MyMvc4.pdb
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\MyMvc4.dll.config
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\System.Net.Http.Formatting.dll
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\System.Web.Http.dll
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\System.Web.Http.WebHost.dll
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\System.Net.Http.Formatting.xml
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\System.Web.Http.xml
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\System.Web.Http.WebHost.xml
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\zh-Hans\System.Net.Http.Formatting.resources.dll
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\zh-Hans\System.Web.Http.resources.dll
+D:\hsx\PROJECTS\GitTest\WpfAliyun\MyMvc4\bin\zh-Hans\System.Web.Http.WebHost.resources.dll
